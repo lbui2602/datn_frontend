@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin Panel</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active">
+                    <a href="dashboard.html"><i class="fas fa-home"></i> Trang chủ</a>
+                </li>
+                <li>
+                    <a href="employees.html"><i class="fas fa-users"></i> Quản lý nhân viên</a>
+                </li>
+                <li>
+                    <a href="attendance.html"><i class="fas fa-calendar-check"></i> Quản lý chấm công</a>
+                </li>
+                <li>
+                    <a href="workdays.html"><i class="fas fa-calendar-alt"></i> Quản lý ngày công</a>
+                </li>
+                <li>
+                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                </li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header>
+                <h1>Chào mừng đến với Hệ thống Quản lý</h1>
+                <div class="user-info">
+                    <span id="currentUser">Admin</span>
+                    <img src="img/avatar-default.png" alt="User Avatar">
+                </div>
+            </header>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Tổng số nhân viên</h3>
+                    <p id="totalEmployees">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Nhân viên đi làm hôm nay</h3>
+                    <p id="todayAttendance">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Tổng ngày công tháng này</h3>
+                    <p id="monthlyWorkdays">0</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/dashboard.js"></script>
+</body>
+</html> 

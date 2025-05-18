@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Quản Lý</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Trang Quản Trị</h1>
+
+  <div class="tabs">
+    <button onclick="showTab('nhanvien')">Quản lý nhân viên</button>
+    <button onclick="showTab('ngaycong')">Lịch sử ngày công</button>
+    <button onclick="showTab('chamcong')">Lịch sử chấm công</button>
+  </div>
+
+  <div id="nhanvien" class="tab-content">
+    <h2>Quản lý nhân viên</h2>
+    <button onclick="loadData('/api/auth/users', 'nhanvien-data')">Tải dữ liệu</button>
+    <div id="nhanvien-data"></div>
+  </div>
+
+  <div id="ngaycong" class="tab-content" style="display:none;">
+    <h2>Lịch sử ngày công</h2>
+    <button onclick="loadData('/api/working-days', 'ngaycong-data')">Tải dữ liệu</button>
+    <div id="ngaycong-data"></div>
+  </div>
+
+  <div id="chamcong" class="tab-content" style="display:none;">
+    <h2>Lịch sử chấm công</h2>
+    <button onclick="loadData('/api/attendance', 'chamcong-data')">Tải dữ liệu</button>
+    <div id="chamcong-data"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
