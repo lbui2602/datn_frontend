@@ -12,12 +12,14 @@ async function fetchWorkdays() {
     const [year, month, day] = date.split("-");
     const formattedDate = `${day}-${month}-${year}`;
     const departmentId = document.getElementById("departmentFilter").value;
+    const nameFilter = document.getElementById("nameFilter").value.trim();
 
     try {
         let url = "http://localhost:3000/api/working-days/getAll";
         const body = {};
         if (date) body.date = formattedDate;
         if (departmentId) body.idDepartment = departmentId;
+        if (nameFilter) body.name = nameFilter;
 
         const response = await fetch(url, {
             method: "POST",
@@ -184,18 +186,29 @@ window.onclick = function (event) {
     }
 };
 
-// Xử lý sự kiện thay đổi filter
-document.getElementById("dateFilter").addEventListener("change", fetchWorkdays);
-document.getElementById("departmentFilter").addEventListener("change", fetchWorkdays);
-
-// Xử lý sự kiện xuất Excel
-document.getElementById("exportExcelBtn").addEventListener("click", exportToExcel);
-
-// Khởi tạo trang
-window.addEventListener("load", function () {
-    checkAuth();
+// Thiết lập các event listener
+document.addEventListener("DOMContentLoaded", function () {
+    // Lấy danh sách phòng ban
     fetchDepartments();
+
+    // Lấy danh sách ngày công
     fetchWorkdays();
+
+    // Xử lý sự kiện thay đổi ngày
+    document.getElementById("dateFilter").addEventListener("change", fetchWorkdays);
+
+    // Xử lý sự kiện thay đổi phòng ban
+    document.getElementById("departmentFilter").addEventListener("change", fetchWorkdays);
+
+    // Xử lý sự kiện tìm kiếm theo tên - chỉ gọi khi người dùng thả phím
+    document.getElementById("nameFilter").addEventListener("keyup", function(e) {
+        if (e.key === "Enter") {
+            fetchWorkdays();
+        }
+    });
+
+    // Xử lý sự kiện xuất Excel
+    document.getElementById("exportExcelBtn").addEventListener("click", exportToExcel);
 });
 
 // Xử lý đăng xuất

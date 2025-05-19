@@ -1,0 +1,25 @@
+body {
+  font-family: sans-serif;
+  padding: 20px;
+}
+
+.tabs button {
+  margin: 5px;
+  padding: 10px 15px;
+  background: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.tab-content {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+pre {
+  background: #f4f4f4;
+  padding: 10px;
+  overflow-x: auto;
+}
