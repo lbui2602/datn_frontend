@@ -161,9 +161,11 @@ function exportToExcel() {
         // Thêm worksheet vào workbook
         XLSX.utils.book_append_sheet(wb, ws, "Ngày công");
 
-        // Tạo tên file với ngày hiện tại
-        const date = document.getElementById("dateFilter").value;
-        const fileName = date ? `ngay_cong_${date}.xlsx` : `ngay_cong_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.xlsx`;
+        // Tạo tên file với tháng/năm hiện tại
+        const monthYear = document.getElementById("monthYearFilter").value;
+        const fileName = monthYear 
+            ? `ngay_cong_${monthYear}.xlsx` 
+            : `ngay_cong_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.xlsx`;
 
         // Xuất file
         XLSX.writeFile(wb, fileName);
