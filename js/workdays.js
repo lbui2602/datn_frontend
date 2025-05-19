@@ -8,16 +8,16 @@ function checkAuth() {
 
 // Lấy danh sách ngày công
 async function fetchWorkdays() {
-    const date = document.getElementById("dateFilter").value;
-    const [year, month, day] = date.split("-");
-    const formattedDate = `${day}-${month}-${year}`;
+    const monthYear = document.getElementById("monthYearFilter").value;
     const departmentId = document.getElementById("departmentFilter").value;
     const nameFilter = document.getElementById("nameFilter").value.trim();
 
     try {
-        let url = "http://localhost:3000/api/working-days/getAll";
+        let url = "http://localhost:3000/api/working-days/getAllWithFilter";
         const body = {};
-        if (date) body.date = formattedDate;
+        const [year, month] = monthYear.split('-');
+        const formattedDate = `${month}-${year}`;
+        if (monthYear) body.monthYear = formattedDate;
         if (departmentId) body.idDepartment = departmentId;
         if (nameFilter) body.name = nameFilter;
 
@@ -194,8 +194,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Lấy danh sách ngày công
     fetchWorkdays();
 
-    // Xử lý sự kiện thay đổi ngày
-    document.getElementById("dateFilter").addEventListener("change", fetchWorkdays);
+    // Xử lý sự kiện thay đổi tháng/năm
+    document.getElementById("monthYearFilter").addEventListener("change", fetchWorkdays);
 
     // Xử lý sự kiện thay đổi phòng ban
     document.getElementById("departmentFilter").addEventListener("change", fetchWorkdays);

@@ -8,16 +8,16 @@ function checkAuth() {
 
 // Lấy danh sách chấm công
 async function fetchAttendance() {
-  const date = document.getElementById("monthFilter").value;
-  const [year, month, day] = date.split("-");
-  const formattedDate = `${day}-${month}-${year}`;
-  const departmentId = document.getElementById("employeeFilter").value;
+  const monthYear = document.getElementById("monthYearFilter").value;
+  const departmentId = document.getElementById("departmentFilter").value;
   const nameFilter = document.getElementById("nameFilter").value.trim();
 
   try {
-    let url = "http://localhost:3000/api/attendance/getAll";
+    let url = "http://localhost:3000/api/attendance/getAllWithFilter";
     const body = {};
-    if (date) body.date = formattedDate;
+    const [year, month] = monthYear.split("-");
+    const formattedDate = `${month}-${year}`;
+    if (monthYear) body.monthYear = formattedDate;
     if (departmentId) body.idDepartment = departmentId;
     if (nameFilter) body.name = nameFilter;
 
@@ -81,7 +81,7 @@ async function fetchDepartments() {
     if (response.ok) {
       const data = await response.json();
       if (data.code === "1") {
-        const select = document.getElementById("employeeFilter");
+        const select = document.getElementById("departmentFilter");
         select.innerHTML = '<option value="">Tất cả phòng ban</option>';
 
         data.departments.forEach((department) => {
@@ -106,11 +106,11 @@ function exportToExcel() {
     }
 
     // Chuẩn bị dữ liệu cho Excel
-    const excelData = window.currentAttendances.map(record => ({
+    const excelData = window.currentAttendances.map((record) => ({
       "Họ tên": record.userId ? record.userId.fullName : "N/A",
-      "Ngày": record.date || "",
+      Ngày: record.date || "",
       "Giờ chấm công": record.time || "",
-      "Loại": record.type === "check_in" ? "Vào" : "Ra"
+      Loại: record.type === "check_in" ? "Vào" : "Ra",
     }));
 
     // Tạo workbook mới
@@ -121,8 +121,12 @@ function exportToExcel() {
     XLSX.utils.book_append_sheet(wb, ws, "Chấm công");
 
     // Tạo tên file với ngày hiện tại
-    const date = document.getElementById("monthFilter").value;
-    const fileName = date ? `cham_cong_${date}.xlsx` : `cham_cong_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.xlsx`;
+    const date = document.getElementById("monthYearFilter").value;
+    const fileName = date
+      ? `cham_cong_${date}.xlsx`
+      : `cham_cong_${new Date()
+          .toLocaleDateString("vi-VN")
+          .replace(/\//g, "-")}.xlsx`;
 
     // Xuất file
     XLSX.writeFile(wb, fileName);
@@ -140,21 +144,27 @@ document.addEventListener("DOMContentLoaded", function () {
   // Lấy danh sách chấm công
   fetchAttendance();
 
-  // Xử lý sự kiện thay đổi ngày
-  document.getElementById("monthFilter").addEventListener("change", fetchAttendance);
+  // Xử lý sự kiện thay đổi tháng/năm
+  document
+    .getElementById("monthYearFilter")
+    .addEventListener("change", fetchAttendance);
 
   // Xử lý sự kiện thay đổi phòng ban
-  document.getElementById("employeeFilter").addEventListener("change", fetchAttendance);
+  document
+    .getElementById("departmentFilter")
+    .addEventListener("change", fetchAttendance);
 
   // Xử lý sự kiện tìm kiếm theo tên - chỉ gọi khi người dùng thả phím
-  document.getElementById("nameFilter").addEventListener("keyup", function(e) {
+  document.getElementById("nameFilter").addEventListener("keyup", function (e) {
     if (e.key === "Enter") {
       fetchAttendance();
     }
   });
 
   // Xử lý sự kiện xuất Excel
-  document.getElementById("exportExcelBtn").addEventListener("click", exportToExcel);
+  document
+    .getElementById("exportExcelBtn")
+    .addEventListener("click", exportToExcel);
 });
 
 // Xử lý đăng xuất
