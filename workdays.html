@@ -6,6 +6,7 @@
     <title>Quản lý ngày công</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -35,15 +36,15 @@
             <header>
                 <h1>Quản lý ngày công</h1>
                 <div class="actions">
-                    <button id="exportWorkdaysBtn" class="btn-secondary">
-                        <i class="fas fa-file-export"></i> Xuất file
+                    <button id="exportExcelBtn" class="btn-secondary">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
                     </button>
                 </div>
             </header>
             <div class="filters">
                 <div class="form-group">
-                    <label for="monthYearFilter">Tháng/Năm:</label>
-                    <input type="month" id="monthYearFilter">
+                    <label for="dateFilter">Ngày:</label>
+                    <input type="date" id="dateFilter">
                 </div>
                 <div class="form-group">
                     <label for="departmentFilter">Phòng ban:</label>
@@ -56,13 +57,9 @@
                 <table id="workdaysTable">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Họ tên</th>
-                            <th>Phòng ban</th>
-                            <th>Tổng ngày công</th>
-                            <th>Ngày nghỉ phép</th>
-                            <th>Ngày làm thêm</th>
-                            <th>Ngày lễ</th>
+                            <th>Ngày</th>
+                            <th>Tổng số giờ</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
@@ -74,35 +71,29 @@
         </main>
     </div>
 
-    <!-- Modal chỉnh sửa ngày công -->
-    <div id="editWorkdayModal" class="modal">
+    <!-- Modal xem chi tiết -->
+    <div id="detailModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Chỉnh sửa thông tin ngày công</h2>
-            <form id="editWorkdayForm">
-                <input type="hidden" id="workdayId">
-                <div class="form-group">
-                    <label for="employeeName">Nhân viên:</label>
-                    <input type="text" id="employeeName" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="totalWorkdays">Tổng ngày công:</label>
-                    <input type="number" id="totalWorkdays" required min="0">
-                </div>
-                <div class="form-group">
-                    <label for="leavedays">Ngày nghỉ phép:</label>
-                    <input type="number" id="leavedays" required min="0">
-                </div>
-                <div class="form-group">
-                    <label for="overtimeDays">Ngày làm thêm:</label>
-                    <input type="number" id="overtimeDays" required min="0">
-                </div>
-                <div class="form-group">
-                    <label for="holidayDays">Ngày lễ:</label>
-                    <input type="number" id="holidayDays" required min="0">
-                </div>
-                <button type="submit" class="btn-primary">Lưu thay đổi</button>
-            </form>
+            <div class="modal-header">
+                <h2>Chi tiết chấm công</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <table id="detailTable">
+                    <thead>
+                        <tr>
+                            <th>Họ tên</th>
+                            <th>Ngày</th>
+                            <th>Giờ chấm công</th>
+                            <th>Loại</th>
+                            <th>Ảnh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Chi tiết chấm công sẽ được thêm vào đây -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

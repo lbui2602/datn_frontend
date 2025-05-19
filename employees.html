@@ -6,12 +6,13 @@
     <title>Quản lý nhân viên</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
         <nav class="sidebar">
             <div class="logo">
-                <h2>Admin Panel</h2>
+                <h2>Admin Page</h2>
             </div>
             <ul class="nav-links">
                 <li>
@@ -38,8 +39,8 @@
                     <button id="addEmployeeBtn" class="btn-primary">
                         <i class="fas fa-plus"></i> Thêm nhân viên
                     </button>
-                    <button id="exportBtn" class="btn-secondary">
-                        <i class="fas fa-file-export"></i> Xuất file
+                    <button id="exportExcelBtn" class="btn-secondary">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
                     </button>
                 </div>
             </header>

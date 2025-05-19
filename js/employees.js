@@ -115,6 +115,8 @@ async function fetchEmployees(searchTerm = '', departmentId = '') {
             if (data.code === "1") {
                 // Kiểm tra xem dữ liệu trả về nằm trong thuộc tính nào
                 const users = data.users || data.staffs || data.searchResults || [];
+                // Store the current employees for Excel export
+                window.currentEmployees = users;
                 displayEmployees(users);
             } else {
                 console.error('Failed to fetch employees:', data.message);
@@ -164,21 +166,20 @@ function displayEmployees(employees) {
 
             <td>
                 <span class="status-badge ${employee.status ? 'active' : 'inactive'}">
-                    ${employee.status ? 'Kích hoạt' : 'Vô hiệu'}
+                    ${employee.status ? 'Xác nhận' : 'Khóa'}
                 </span>
             </td>
             <td>
-                <button onclick="openEditModal('${employee._id}')" class="btn-icon" title="Sửa">
+                <button onclick="openEditModal('${employee._id}')" class="btn-icon" title="Sửa" style="margin: 1px;">
                     <i class="fas fa-edit"></i>
                 </button>
-                <button onclick="deleteEmployee('${employee._id}')" class="btn-icon btn-danger" title="Xóa">
+                <button onclick="deleteEmployee('${employee._id}')" class="btn-icon btn-danger" title="Xóa" style="margin: 1px;">
                     <i class="fas fa-trash"></i>
                 </button>
-                <button onclick="toggleStatus('${employee._id}')" class="btn-icon ${employee.status ? 'btn-warning' : 'btn-success'}" title="${employee.status ? 'Vô hiệu hóa' : 'Kích hoạt'}">
+                <button onclick="toggleStatus('${employee._id}')" class="btn-icon ${employee.status ? 'btn-warning' : 'btn-success'}" title="${employee.status ? 'Khóa' : 'Xác nhận'}" style="margin: 1px;">
                     <i class="fas fa-${employee.status ? 'ban' : 'check'}"></i>
                 </button>
-            </td>
-        `;
+            </td>`;
         tbody.appendChild(row);
     });
 }
@@ -250,7 +251,10 @@ async function deleteEmployee(id) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/users/${id}`, {
+        var url = `${API_URL}/auth/delete/${id}`
+        var token = localStorage.getItem('token')
+        console.log(token)
+        const response = await fetch(`${API_URL}/auth/delete/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -395,6 +399,7 @@ function setupEventListeners() {
     // Nút đăng xuất
     document.getElementById('logoutBtn').addEventListener('click', function() {
         localStorage.removeItem('token');
+        localStorage.removeItem('data');
         window.location.href = 'login.html';
     });
 
@@ -407,7 +412,7 @@ function setupEventListeners() {
     });
 
     // Xuất file Excel
-    document.getElementById('exportBtn').addEventListener('click', exportToExcel);
+    document.getElementById('exportExcelBtn').addEventListener('click', exportToExcel);
 }
 
 // Đóng modal
@@ -430,30 +435,44 @@ function debounce(func, wait) {
 }
 
 // Xuất file Excel
-async function exportToExcel() {
+function exportToExcel() {
     try {
-        const response = await fetch(`${API_URL}/users/export`, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+        if (!window.currentEmployees || window.currentEmployees.length === 0) {
+            alert("Không có dữ liệu để xuất!");
+            return;
+        }
+
+        // Chuẩn bị dữ liệu cho Excel
+        const excelData = window.currentEmployees.map(employee => {
+            const department = departments.find(d => d._id === employee.idDepartment);
+            const role = roles.find(r => r._id === employee.roleId);
+            
+            return {
+                "ID": employee._id || "N/A",
+                "Họ tên": employee.fullName || "N/A",
+                "Email": employee.email || "N/A",
+                "Số điện thoại": employee.phone || "N/A",
+                "Địa chỉ": employee.address || "N/A",
+                "Ngày sinh": employee.birthday || "N/A",
+                "Giới tính": employee.gender || "N/A",
+                "Phòng ban": department ? department.name : "N/A",
+                "Trạng thái": employee.status ? "Xác nhận" : "Khóa"
+            };
         });
 
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'danh-sach-nhan-vien.xlsx';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            a.remove();
-        } else {
-            throw new Error('Failed to export data');
-        }
+        // Tạo workbook mới
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(excelData);
+
+        // Thêm worksheet vào workbook
+        XLSX.utils.book_append_sheet(wb, ws, "Nhân viên");
+
+        // Xuất file với tên phù hợp
+        const fileName = `danh_sach_nhan_vien_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.xlsx`;
+        XLSX.writeFile(wb, fileName);
     } catch (error) {
-        console.error('Error exporting to Excel:', error);
-        alert('Có lỗi xảy ra khi xuất file Excel');
+        console.error("Error:", error);
+        alert("Có lỗi xảy ra khi xuất file");
     }
 }
 

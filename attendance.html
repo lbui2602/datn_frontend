@@ -6,6 +6,7 @@
     <title>Quản lý chấm công</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -35,20 +36,20 @@
             <header>
                 <h1>Quản lý chấm công</h1>
                 <div class="actions">
-                    <button id="exportAttendanceBtn" class="btn-secondary">
-                        <i class="fas fa-file-export"></i> Xuất file
+                    <button id="exportExcelBtn" class="btn-secondary">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
                     </button>
                 </div>
             </header>
             <div class="filters">
                 <div class="form-group">
-                    <label for="monthFilter">Tháng:</label>
-                    <input type="month" id="monthFilter">
+                    <label for="monthFilter">Ngày:</label>
+                    <input type="date" id="monthFilter">
                 </div>
                 <div class="form-group">
-                    <label for="employeeFilter">Nhân viên:</label>
+                    <label for="employeeFilter">Phòng ban:</label>
                     <select id="employeeFilter">
-                        <option value="">Tất cả nhân viên</option>
+                        <option value="">Tất cả phòng ban</option>
                     </select>
                 </div>
             </div>
@@ -56,14 +57,11 @@
                 <table id="attendanceTable">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Họ tên</th>
                             <th>Ngày</th>
-                            <th>Giờ vào</th>
-                            <th>Giờ ra</th>
-                            <th>Tổng giờ</th>
-                            <th>Trạng thái</th>
-                            <th>Thao tác</th>
+                            <th>Giờ chấm công</th>
+                            <th>Loại</th>
+                            <th>Ảnh</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,39 +71,6 @@
             </div>
         </main>
     </div>
-
-    <!-- Modal chỉnh sửa chấm công -->
-    <div id="editAttendanceModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Chỉnh sửa thông tin chấm công</h2>
-            <form id="editAttendanceForm">
-                <input type="hidden" id="attendanceId">
-                <div class="form-group">
-                    <label for="attendanceDate">Ngày:</label>
-                    <input type="date" id="attendanceDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="timeIn">Giờ vào:</label>
-                    <input type="time" id="timeIn" required>
-                </div>
-                <div class="form-group">
-                    <label for="timeOut">Giờ ra:</label>
-                    <input type="time" id="timeOut" required>
-                </div>
-                <div class="form-group">
-                    <label for="status">Trạng thái:</label>
-                    <select id="status" required>
-                        <option value="present">Có mặt</option>
-                        <option value="absent">Vắng mặt</option>
-                        <option value="late">Đi muộn</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary">Lưu thay đổi</button>
-            </form>
-        </div>
-    </div>
-
     <script src="js/attendance.js"></script>
 </body>
 </html> 

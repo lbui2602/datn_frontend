@@ -214,3 +214,10 @@ tr:hover {
         flex-direction: column;
     }
 } 
+
+.btn-icon {
+    margin-right: 5px;
+}
+.btn-icon:last-child {
+    margin-right: 0;
+}

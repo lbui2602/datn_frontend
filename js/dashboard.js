@@ -40,7 +40,7 @@ function displayUserInfo() {
 document.getElementById('logoutBtn').addEventListener('click', function(e) {
     e.preventDefault();
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem('data');
     window.location.href = 'login.html';
 });
 
