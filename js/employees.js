@@ -190,7 +190,6 @@ function openAddModal() {
     employeeForm.reset();
     document.getElementById('employeeId').value = '';
     document.getElementById('modalPassword').required = true;
-    document.getElementById('modalStatus').checked = true;
     document.querySelector('.password-group').style.display = 'block';
     modal.style.display = 'block';
 }
@@ -227,7 +226,6 @@ async function openEditModal(id) {
                 document.getElementById('modalGender').value = user.gender || '';
                 document.getElementById('modalDepartment').value = user.idDepartment || '';
                 document.getElementById('modalRole').value = user.roleId || '';
-                document.getElementById('modalStatus').checked = user.status === true;
                 
                 // Ẩn trường mật khẩu khi chỉnh sửa
                 document.getElementById('modalPassword').required = false;
@@ -331,7 +329,6 @@ employeeForm.addEventListener('submit', async function(e) {
         gender: document.getElementById('modalGender').value,
         roleId: document.getElementById('modalRole').value,
         idDepartment: document.getElementById('modalDepartment').value,
-        status: document.getElementById('modalStatus').checked
     };
 
     // Thêm mật khẩu nếu là thêm mới

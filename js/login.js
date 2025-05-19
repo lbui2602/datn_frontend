@@ -18,7 +18,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         if (data.code === "1") {
             console.log(data.isAdmin)
             // Kiểm tra isAdmin
-            if (data && data.isAdmin) {
+            if (data && data.isAdmin && data.status) {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data));
                 window.location.href = 'dashboard.html';
