@@ -162,6 +162,7 @@ function displayEmployees(employees) {
             <td>${employee.birthday || ''}</td>
             <td>${employee.gender}</td>
             <td>${department ? department.name : ''}</td>
+            <td>${role ? role.name : ''}</td>
             <td>${employee.image ? `<a href="http://localhost:3000${employee.image}" target="_blank">Xem</a>` : 'N/A'}</td>
 
             <td>
@@ -190,6 +191,7 @@ function openAddModal() {
     employeeForm.reset();
     document.getElementById('employeeId').value = '';
     document.getElementById('modalPassword').required = true;
+    document.getElementById('modalStatus').checked = true;
     document.querySelector('.password-group').style.display = 'block';
     modal.style.display = 'block';
 }
