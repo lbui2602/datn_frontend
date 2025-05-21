@@ -191,7 +191,6 @@ function openAddModal() {
     employeeForm.reset();
     document.getElementById('employeeId').value = '';
     document.getElementById('modalPassword').required = true;
-    document.getElementById('modalStatus').checked = true;
     document.querySelector('.password-group').style.display = 'block';
     modal.style.display = 'block';
 }
